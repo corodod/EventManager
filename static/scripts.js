@@ -1,7 +1,6 @@
-var notificationsSent = []; // Список для хранения отправленных уведомлений
+var notificationsSent = [];
 
 function showNotification(event) {
-    // Проверяем, было ли уже отправлено уведомление для данного события
     if (!notificationsSent.includes(event.date + event.time)) {
         var notification = document.createElement('div');
         notification.className = 'notification';
@@ -9,9 +8,7 @@ function showNotification(event) {
         document.body.appendChild(notification);
         setTimeout(function() {
             notification.style.display = 'none';
-        }, 5000); // Скрыть уведомление через 5 секунд
-
-        // Добавляем текущее событие в список отправленных уведомлений
+        }, 5000);
         notificationsSent.push(event.date + event.time);
     }
 }
@@ -23,14 +20,13 @@ function checkEvents() {
             var currentDate = new Date();
             data.events.forEach(function (event) {
                 var eventDate = new Date(event.date + ' ' + event.time);
-                if (eventDate <= currentDate) {
+                if (eventDate <= currentDate && !notificationsSent.includes(event.date + event.time)) {
                     showNotification(event);
                 }
             });
         });
 }
 
-// Вызов функции checkEvents() каждую минуту
 setInterval(checkEvents, 60000);
 window.onload = function() {
     checkEvents();
