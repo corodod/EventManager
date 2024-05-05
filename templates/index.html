@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"
+            integrity="sha512-0F39rJ1Xv1l9zGWel2BJV7Ig8yelbN9Tw9eUXLhDZKm9h44yTfddNG52QatqfLhjH0ckKfJYJxLjCtjFvUIO4A=="
+            crossorigin="anonymous"></script>
+    <!-- Путь к файлу стилей -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Путь к файлу скриптов -->
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+</head>
+<body>
+    <h1>Календарь</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Время</th>
+                <th>Событие</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            {% if event[1] %}
+            <tr>
+                <td>{{ event[1] }}</td>
+                <td>{{ event[2] }}</td>
+                <td>{{ event[3] }}</td>
+                <td>
+                    <form action="/delete_event" method="post">
+                        <input type="hidden" name="date" value="{{ event[1] }}">
+                        <input type="hidden" name="time" value="{{ event[2] }}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Добавить событие</h2>
+    <form action="/add_event" method="post">
+        <label for="date">Дата:</label>
+        <input type="date" id="date" name="date" required><br>
+        <label for="time">Время:</label>
+        <input type="time" id="time" name="time" required><br>
+        <label for="event">Событие:</label>
+        <input type="text" id="event" name="event" required><br>
+        <button type="submit">Добавить</button>
+    </form>
+</body>
+</html>
